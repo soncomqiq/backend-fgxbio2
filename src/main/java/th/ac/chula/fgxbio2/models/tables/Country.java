@@ -23,4 +23,7 @@ public class Country {
 
 	@OneToMany(mappedBy = "country")
 	private List<Region> regions;
+	
+	@OneToMany(mappedBy = "country")
+	private List<Person> persons;
 }

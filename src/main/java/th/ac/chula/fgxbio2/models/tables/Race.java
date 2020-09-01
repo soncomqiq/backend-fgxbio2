@@ -24,5 +24,6 @@ public class Race {
 	@OneToMany(mappedBy = "race")
 	private List<SummaryData> summaryData;
 	
+	@OneToMany(mappedBy = "race")
 	private List<Person> persons;
 }

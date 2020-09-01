@@ -13,23 +13,29 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "regions")
-public class Region {
+@Table(name = "forenseq")
+public class Forenseq {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
+	
+	@Column(name = "locus")
+	private String locus;
 
-	@Column(name = "region")
-	private String region;
+	@Column(name = "genotype")
+	private String genotype;
 
+	@Column(name = "qc_indicator")
+	private String qcIndicator;
+
+	@Column(name = "chromosome_type")
+	private String chromosomeType;
+	
 	@ManyToOne
-	@JoinColumn(name = "country_id")
-	private Country country;
+	@JoinColumn(name = "sample_id")
+	private Sample sample;
 	
-	@OneToMany(mappedBy = "region")
-	private List<Province> provinces;
-	
-	@OneToMany(mappedBy = "region")
-	private List<Person> persons;
+	@OneToMany(mappedBy = "forenseq")
+	private List<ForenseqSequence> forenseqSequences;
 }

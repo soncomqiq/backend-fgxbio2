@@ -13,23 +13,29 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "regions")
-public class Region {
+@Table(name = "samples")
+public class Sample {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 
-	@Column(name = "region")
-	private String region;
+	@Column(name = "sample_year")
+	private int sample_year;
 
+	@Column(name = "sample_id")
+	private String sample_id;
+	
 	@ManyToOne
-	@JoinColumn(name = "country_id")
-	private Country country;
+	@JoinColumn(name = "person_id")
+	private Person person;
 	
-	@OneToMany(mappedBy = "region")
-	private List<Province> provinces;
+	@OneToMany(mappedBy = "sample")
+	private List<Razor> razorList;
+
+	@OneToMany(mappedBy = "sample")
+	private List<CEData> cEDataList;
 	
-	@OneToMany(mappedBy = "region")
-	private List<Person> persons;
+	@OneToMany(mappedBy = "sample")
+	private List<Forenseq> forenseqList;
 }
