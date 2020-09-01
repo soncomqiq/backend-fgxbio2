@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -26,6 +27,9 @@ public class Locus {
 	@ManyToMany
 	@JoinTable(name = "kit_locus", joinColumns = @JoinColumn(name = "locus_id"), inverseJoinColumns = @JoinColumn(name = "kit_id"))
 	private List<Kit> kits;
+	
+	@OneToMany(mappedBy = "locus")
+	private List<SummaryData> summaryData;
 	
 	public Locus() {
 	}
