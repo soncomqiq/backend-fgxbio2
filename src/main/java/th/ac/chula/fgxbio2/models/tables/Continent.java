@@ -10,8 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "continents")
+@Getter
+@Setter
 public class Continent {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,30 +34,6 @@ public class Continent {
 
 	public Continent(String continent, List<SummaryData> summaryData) {
 		this.continent = continent;
-		this.summaryData = summaryData;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getContinent() {
-		return continent;
-	}
-
-	public void setContinent(String continent) {
-		this.continent = continent;
-	}
-
-	public List<SummaryData> getSummaryData() {
-		return summaryData;
-	}
-
-	public void setSummaryData(List<SummaryData> summaryData) {
 		this.summaryData = summaryData;
 	}
 

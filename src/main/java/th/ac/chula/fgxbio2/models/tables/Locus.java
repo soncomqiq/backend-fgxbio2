@@ -13,8 +13,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "loci")
+@Getter
+@Setter
 public class Locus {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,30 +41,6 @@ public class Locus {
 
 	public Locus(String locus, List<Kit> kits) {
 		this.locus = locus;
-		this.kits = kits;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getLocus() {
-		return locus;
-	}
-
-	public void setLocus(String locus) {
-		this.locus = locus;
-	}
-
-	public List<Kit> getKits() {
-		return kits;
-	}
-
-	public void setKits(List<Kit> kits) {
 		this.kits = kits;
 	}
 

@@ -10,8 +10,17 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "countries")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Country {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +35,15 @@ public class Country {
 	
 	@OneToMany(mappedBy = "country")
 	private List<Person> persons;
+
+	public Country(int id, String country) {
+		super();
+		this.id = id;
+		this.country = country;
+	}
+
+	@Override
+	public String toString() {
+		return "Country [id=" + id + ", country=" + country + ", regions=" + regions + ", persons=" + persons + "]";
+	}
 }

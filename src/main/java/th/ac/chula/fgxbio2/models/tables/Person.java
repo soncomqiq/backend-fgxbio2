@@ -15,8 +15,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "persons")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Person {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,4 +64,25 @@ public class Person {
 	
 	@OneToMany(mappedBy = "person")
 	private List<Sample> samples;
+
+	public Person(int id, String firstname, String lastname, EGender gender, @Size(min = 0, max = 200) int age,
+			Race race, Country country, Region region, Province province) {
+		super();
+		this.id = id;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.gender = gender;
+		this.age = age;
+		this.race = race;
+		this.country = country;
+		this.region = region;
+		this.province = province;
+	}
+
+	@Override
+	public String toString() {
+		return "Person [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", gender=" + gender
+				+ ", age=" + age + ", race=" + race + ", country=" + country + ", region=" + region + ", province="
+				+ province + ", samples=" + samples + "]";
+	}
 }

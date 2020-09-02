@@ -10,8 +10,17 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "races")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Race {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +32,19 @@ public class Race {
 
 	@OneToMany(mappedBy = "race")
 	private List<SummaryData> summaryData;
-	
+
 	@OneToMany(mappedBy = "race")
 	private List<Person> persons;
+
+	public Race(String race, List<SummaryData> summaryData) {
+		super();
+		this.race = race;
+		this.summaryData = summaryData;
+	}
+
+	@Override
+	public String toString() {
+		return "Race [id=" + id + ", race=" + race + ", summaryData=" + summaryData + ", persons=" + persons + "]";
+	}
+
 }

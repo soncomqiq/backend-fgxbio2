@@ -9,8 +9,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "razor")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Razor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,4 +41,10 @@ public class Razor {
 	@ManyToOne
 	@JoinColumn(name = "sample_id")
 	private Sample sample;
+
+	@Override
+	public String toString() {
+		return "Razor [id=" + id + ", locus=" + locus + ", genotype=" + genotype + ", qcIndicator=" + qcIndicator
+				+ ", chromosomeType=" + chromosomeType + ", sample=" + sample + "]";
+	}
 }

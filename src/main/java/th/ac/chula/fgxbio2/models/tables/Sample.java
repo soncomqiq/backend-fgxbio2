@@ -12,8 +12,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "samples")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Sample {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,4 +47,17 @@ public class Sample {
 	
 	@OneToMany(mappedBy = "sample")
 	private List<Forenseq> forenseqList;
+
+	public Sample(int sample_year, String sample_id, Person person) {
+		super();
+		this.sample_year = sample_year;
+		this.sample_id = sample_id;
+		this.person = person;
+	}
+
+	@Override
+	public String toString() {
+		return "Sample [id=" + id + ", sample_year=" + sample_year + ", sample_id=" + sample_id + ", person=" + person
+				+ ", razorList=" + razorList + ", cEDataList=" + cEDataList + ", forenseqList=" + forenseqList + "]";
+	}
 }

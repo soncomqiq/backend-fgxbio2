@@ -12,8 +12,17 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "kits")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Kit {
 
 	@Id
@@ -31,47 +40,10 @@ public class Kit {
 	@JoinTable(name = "kit_locus", joinColumns = @JoinColumn(name = "kit_id"), inverseJoinColumns = @JoinColumn(name = "locus_id"))
 	private List<Locus> loci;
 
-	public Kit() {
-
-	}
-
-	public Kit(String kit, String chromosome_type, List<Locus> loci) {
+	public Kit(String kit, String chromosome_type) {
 		super();
 		this.kit = kit;
 		this.chromosome_type = chromosome_type;
-		this.loci = loci;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getKit() {
-		return kit;
-	}
-
-	public void setKit(String kit) {
-		this.kit = kit;
-	}
-
-	public String getChromosome_type() {
-		return chromosome_type;
-	}
-
-	public void setChromosome_type(String chromosome_type) {
-		this.chromosome_type = chromosome_type;
-	}
-
-	public List<Locus> getLoci() {
-		return loci;
-	}
-
-	public void setLoci(List<Locus> loci) {
-		this.loci = loci;
 	}
 
 	@Override
