@@ -2,6 +2,7 @@ package th.ac.chula.fgxbio2.models.tables;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,10 +31,10 @@ public class Country {
 	@Column(name = "country")
 	private String country;
 
-	@OneToMany(mappedBy = "country")
+	@OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
 	private List<Region> regions;
 	
-	@OneToMany(mappedBy = "country")
+	@OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
 	private List<Person> persons;
 
 	public Country(int id, String country) {

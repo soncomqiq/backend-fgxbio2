@@ -1,5 +1,6 @@
 package th.ac.chula.fgxbio2.models.tables;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,10 +39,10 @@ public class CEData {
 	@Column(name = "chromosome_type")
 	private String chromosomeType;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "sample_id")
 	private Sample sample;
-	
+
 	public CEData(String locus, String genotype, String qcIndicator, String chromosomeType, Sample sample) {
 		super();
 		this.locus = locus;

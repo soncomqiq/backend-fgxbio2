@@ -1,5 +1,6 @@
 package th.ac.chula.fgxbio2.models.tables;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,18 +36,18 @@ public class SummaryData {
 	@Column(name = "genotype")
 	private String genotype;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "locus_id")
 	private Locus locus;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "continent_id")
 	private Continent continent;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "race_id")
 	private Race race;
-	
+
 	@Override
 	public String toString() {
 		return "SummaryData [id=" + id + ", frequency=" + frequency + ", allele=" + allele + ", genotype=" + genotype

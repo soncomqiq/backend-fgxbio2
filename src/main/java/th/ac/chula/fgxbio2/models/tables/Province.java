@@ -2,6 +2,7 @@ package th.ac.chula.fgxbio2.models.tables;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,11 +33,11 @@ public class Province {
 	@Column(name = "provice")
 	private String province;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "region_id")
 	private Region region;
-	
-	@OneToMany(mappedBy = "province")
+
+	@OneToMany(mappedBy = "province", cascade = CascadeType.ALL)
 	private List<Person> persons;
 
 	public Province(String province, Region region) {

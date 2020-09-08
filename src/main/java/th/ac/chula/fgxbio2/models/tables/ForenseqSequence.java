@@ -1,5 +1,6 @@
 package th.ac.chula.fgxbio2.models.tables;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,31 +34,24 @@ public class ForenseqSequence {
 	@Column(name = "read_count")
 	private int readCount;
 
-	@Column(name = "type")
-	private int type;
-
 	@Size(max = 1000)
 	@Column(name = "sequence")
 	private String sequence;
-	
-	@ManyToOne
+
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "forenseq_id")
 	private Forenseq forenseq;
 
-	public ForenseqSequence(int id, int allele, int readCount, int type, @Size(max = 1000) String sequence,
-			Forenseq forenseq) {
+	public ForenseqSequence(int allele, int readCount, @Size(max = 1000) String sequence) {
 		super();
-		this.id = id;
 		this.allele = allele;
 		this.readCount = readCount;
-		this.type = type;
 		this.sequence = sequence;
-		this.forenseq = forenseq;
 	}
 
 	@Override
 	public String toString() {
-		return "ForenseqSequence [id=" + id + ", allele=" + allele + ", readCount=" + readCount + ", type=" + type
-				+ ", sequence=" + sequence + ", forenseq=" + forenseq + "]";
+		return "ForenseqSequence [id=" + id + ", allele=" + allele + ", readCount=" + readCount + ", sequence="
+				+ sequence + ", forenseq=" + forenseq + "]";
 	}
 }

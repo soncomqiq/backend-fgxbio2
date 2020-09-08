@@ -1,5 +1,6 @@
 package th.ac.chula.fgxbio2.models.tables;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +26,7 @@ public class Razor {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-	
+
 	@Column(name = "locus")
 	private String locus;
 
@@ -37,8 +38,8 @@ public class Razor {
 
 	@Column(name = "chromosome_type")
 	private String chromosomeType;
-	
-	@ManyToOne
+
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "sample_id")
 	private Sample sample;
 

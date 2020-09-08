@@ -2,6 +2,7 @@ package th.ac.chula.fgxbio2.models.tables;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,17 +26,17 @@ public class Locus {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-	
+
 	@Column(name = "locus")
 	private String locus;
-	
-	@ManyToMany
+
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinTable(name = "kit_locus", joinColumns = @JoinColumn(name = "locus_id"), inverseJoinColumns = @JoinColumn(name = "kit_id"))
 	private List<Kit> kits;
-	
-	@OneToMany(mappedBy = "locus")
+
+	@OneToMany(mappedBy = "locus", cascade = CascadeType.ALL)
 	private List<SummaryData> summaryData;
-	
+
 	public Locus() {
 	}
 

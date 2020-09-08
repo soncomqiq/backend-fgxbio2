@@ -1,7 +1,9 @@
 package th.ac.chula.fgxbio2.models.tables;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
@@ -43,32 +47,30 @@ public class Person {
 	private EGender gender;
 
 	@Column(name = "age")
-	@Size(min = 0, max = 200)
 	private int age;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "race_id")
 	private Race race;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "country_id")
 	private Country country;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "region_id")
 	private Region region;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "province_id")
 	private Province province;
-	
-	@OneToMany(mappedBy = "person")
+
+	@OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
 	private List<Sample> samples;
 
-	public Person(int id, String firstname, String lastname, EGender gender, @Size(min = 0, max = 200) int age,
-			Race race, Country country, Region region, Province province) {
+	public Person(String firstname, String lastname, EGender gender, @Size(min = 0, max = 200) int age, Race race,
+			Country country, Region region, Province province) {
 		super();
-		this.id = id;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.gender = gender;
@@ -79,10 +81,19 @@ public class Person {
 		this.province = province;
 	}
 
+	public void add(Sample sample) {
+		if (samples == null) {
+			samples = new ArrayList<>();
+		}
+
+		samples.add(sample);
+		sample.setPerson(this);
+	}
+
 	@Override
 	public String toString() {
 		return "Person [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", gender=" + gender
 				+ ", age=" + age + ", race=" + race + ", country=" + country + ", region=" + region + ", province="
-				+ province + ", samples=" + samples + "]";
+				+ province + "]";
 	}
 }

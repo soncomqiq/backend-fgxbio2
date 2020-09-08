@@ -2,6 +2,7 @@ package th.ac.chula.fgxbio2.models.tables;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +27,7 @@ public class Continent {
 	@Column(name = "continent")
 	private String continent;
 	
-	@OneToMany(mappedBy = "continent")
+	@OneToMany(mappedBy = "continent", cascade = CascadeType.ALL)
 	private List<SummaryData> summaryData;
 	
 	public Continent() {

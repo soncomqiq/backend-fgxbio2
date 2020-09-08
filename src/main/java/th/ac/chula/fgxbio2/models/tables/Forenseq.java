@@ -1,7 +1,9 @@
 package th.ac.chula.fgxbio2.models.tables;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +30,7 @@ public class Forenseq {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-	
+
 	@Column(name = "locus")
 	private String locus;
 
@@ -40,22 +42,30 @@ public class Forenseq {
 
 	@Column(name = "chromosome_type")
 	private String chromosomeType;
-	
-	@ManyToOne
+
+	@ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+						 CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name = "sample_id")
 	private Sample sample;
-	
-	@OneToMany(mappedBy = "forenseq")
+
+	@OneToMany(mappedBy = "forenseq", cascade = CascadeType.ALL)
 	private List<ForenseqSequence> forenseqSequences;
 
-	public Forenseq(int id, String locus, String genotype, String qcIndicator, String chromosomeType, Sample sample) {
+	public Forenseq(String locus, String genotype, String qcIndicator, String chromosomeType) {
 		super();
-		this.id = id;
 		this.locus = locus;
 		this.genotype = genotype;
 		this.qcIndicator = qcIndicator;
 		this.chromosomeType = chromosomeType;
-		this.sample = sample;
+	}
+	
+	public void add(ForenseqSequence fs) {
+		if(forenseqSequences == null) {
+			forenseqSequences = new ArrayList<>();
+		}
+		
+		forenseqSequences.add(fs);
+		fs.setForenseq(this);
 	}
 
 	@Override

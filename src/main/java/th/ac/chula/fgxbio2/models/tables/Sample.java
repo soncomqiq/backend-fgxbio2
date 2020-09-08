@@ -1,7 +1,9 @@
 package th.ac.chula.fgxbio2.models.tables;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,34 +32,44 @@ public class Sample {
 	private int id;
 
 	@Column(name = "sample_year")
-	private int sample_year;
+	private int sampleYear;
 
 	@Column(name = "sample_id")
-	private String sample_id;
-	
-	@ManyToOne
+	private String sampleId;
+
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "person_id")
 	private Person person;
-	
-	@OneToMany(mappedBy = "sample")
+
+	@OneToMany(mappedBy = "sample", cascade = CascadeType.ALL)
 	private List<Razor> razorList;
 
-	@OneToMany(mappedBy = "sample")
+	@OneToMany(mappedBy = "sample", cascade = CascadeType.ALL)
 	private List<CEData> cEDataList;
-	
-	@OneToMany(mappedBy = "sample")
+
+	@OneToMany(mappedBy = "sample", cascade = CascadeType.ALL)
 	private List<Forenseq> forenseqList;
 
-	public Sample(int sample_year, String sample_id, Person person) {
+	public Sample(int sampleYear, String sampleId, Person person) {
 		super();
-		this.sample_year = sample_year;
-		this.sample_id = sample_id;
+		this.sampleYear = sampleYear;
+		this.sampleId = sampleId;
 		this.person = person;
+	}
+
+	public void add(Forenseq forenseq) {
+		if (forenseqList == null) {
+			forenseqList = new ArrayList<>();
+		}
+
+		forenseqList.add(forenseq);
+		forenseq.setSample(this);
 	}
 
 	@Override
 	public String toString() {
-		return "Sample [id=" + id + ", sample_year=" + sample_year + ", sample_id=" + sample_id + ", person=" + person
+		return "Sample [id=" + id + ", sample_year=" + sampleYear + ", sample_id=" + sampleId + ", person=" + person
 				+ ", razorList=" + razorList + ", cEDataList=" + cEDataList + ", forenseqList=" + forenseqList + "]";
 	}
+
 }
