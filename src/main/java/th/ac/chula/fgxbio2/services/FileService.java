@@ -1,7 +1,7 @@
 package th.ac.chula.fgxbio2.services;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,15 +10,16 @@ import java.util.Map.Entry;
 
 import javax.transaction.Transactional;
 
-import org.apache.commons.collections4.map.HashedMap;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import th.ac.chula.fgxbio2.datastucture.SequenceDetail;
 import th.ac.chula.fgxbio2.models.tables.EGender;
@@ -29,14 +30,13 @@ import th.ac.chula.fgxbio2.models.tables.Sample;
 import th.ac.chula.fgxbio2.repository.tables.PersonRepository;
 
 @Service
-public class ExcelUploadService {
+public class FileService {
 	@Autowired
 	private PersonRepository personRepository;
 
 	@Transactional
-	public String readExcelData(String fileName) throws IOException {
-		FileInputStream fis = new FileInputStream(fileName);
-		Workbook workbook = openCompatibleWorkbook(fileName, fis);
+	public String readExcelData(MultipartFile file) throws IOException {
+		Workbook workbook = openCompatibleWorkbook(file.getOriginalFilename(), file.getInputStream());
 
 		int numberOfSheets = workbook.getNumberOfSheets();
 
@@ -53,55 +53,57 @@ public class ExcelUploadService {
 
 			if (sheetName.equals("Autosomal STRs")) {
 				extractInfo(personInfo, sample, sheet);
-				extractForenseqData(personInfo, sample, sheet, locusAllele, 42, 47, "Autosome");
-			}else if (sheetName.equals("Y STRs")) {
-				System.out.println("Y STRS");
-				extractForenseqData(personInfo, sample, sheet, locusAllele, 38, 43, "Y");
-			}else if (sheetName.equals("X STRs")) {
-				extractForenseqData(personInfo, sample, sheet, locusAllele, 21, 26, "X");
+				System.out.println("AAAAAAAAAAAAAAA");
+				extractForenseqData(personInfo, sample, sheet, locusAllele, 13, 40, "Autosome");
+			} else if (sheetName.equals("Y STRs")) {
+				System.out.println("YYYYYYYYYYYYYY");
+				extractForenseqData(personInfo, sample, sheet, locusAllele, 13, 36, "Y");
+			} else if (sheetName.equals("X STRs")) {
+				System.out.println("XXXXXXXXXXXXXXXX");
+				extractForenseqData(personInfo, sample, sheet, locusAllele, 13, 19, "X");
+			} else if (sheetName.equals("iSNPs")) {
+				System.out.println("IIIIIIIIIIIIIIIIII");
+				extractForenseqData(personInfo, sample, sheet, locusAllele, 12, 105, "iSNP");
 			}
 
 			personRepository.save(personInfo);
-
 		}
 
 		return "Successfully uploaded";
 	}
 
-	public Workbook openCompatibleWorkbook(String fileName, FileInputStream fis) throws IOException {
-		if (fileName.toLowerCase().endsWith("xlsx")) {
-			return new XSSFWorkbook(fis);
-		} else if (fileName.toLowerCase().endsWith("xls")) {
-			return new HSSFWorkbook(fis);
-		}
-		return null;
+	public Workbook openCompatibleWorkbook(String fileName, InputStream fis) throws IOException {
+//		if (fileName.toLowerCase().endsWith("xlsx")) {
+//			return new XSSFWorkbook(fis);
+//		} else if (fileName.toLowerCase().endsWith("xls")) {
+//			return new HSSFWorkbook(fis);
+//		}
+		return WorkbookFactory.create(fis);
 	}
 
 	private void extractForenseqData(Person personInfo, Sample sample, Sheet sheet,
-			Map<String, SequenceDetail> locusAllele, int endSummaryLine, int startDetailLine, String chromosomeTag) {
+			Map<String, SequenceDetail> locusAllele, int startSummaryLine, int endSummaryLine, String chromosomeTag) {
 
 		int line = 1;
 		for (Row row : sheet) {
 			List<String> data = getCells(row);
-			System.out.println(data);
-			if (line >= 15 && line <= endSummaryLine) {
+			if (line >= startSummaryLine && line <= endSummaryLine) {
 				locusAllele.put(data.get(0), new SequenceDetail(data.get(1), data.get(2)));
-			} else if (line >= startDetailLine) {
+			} else if (line >= endSummaryLine + 3) {
 				if (data.get(0).equals("n/a")) {
 					break;
 				}
 
 				if (data.get(2).equals("Yes")) {
-					ForenseqSequence tempFS = new ForenseqSequence((int) Double.parseDouble(data.get(1)),
-							(int) Double.parseDouble(data.get(3)), data.get(4));
+					ForenseqSequence tempFS = new ForenseqSequence(data.get(1), (int) Double.parseDouble(data.get(3)),
+							data.size() < 5 ? "n/a" : data.get(4));
 					locusAllele.get(data.get(0)).getFsList().add(tempFS);
 				}
 			}
 
-			if (line == 200)
-				break;
-
-			line++;
+			if (!data.get(0).equals("n/a") && !data.get(0).equals("")) {
+				line++;
+			}
 		}
 
 		for (Entry<String, SequenceDetail> entry : locusAllele.entrySet()) {
@@ -119,7 +121,7 @@ public class ExcelUploadService {
 		for (Row row : sheet) {
 			List<String> data = getCells(row);
 
-			if (line >= 1 && line <= 8) {
+			if (line >= 1 && line <= 7) {
 				if (data.get(0).equals("Created")) {
 					int sampleYear = Integer.parseInt(data.get(1).split(" ")[2]);
 					sample.setSampleYear(sampleYear);
@@ -130,9 +132,13 @@ public class ExcelUploadService {
 					EGender gender = data.get(1) == "XY" ? EGender.MALE : EGender.FEMALE;
 					personInfo.setGender(gender);
 				}
+			} else {
+				break;
 			}
 
-			line++;
+			if (!data.get(0).equals("n/a")) {
+				line++;
+			}
 		}
 	}
 

@@ -29,7 +29,7 @@ public class ForenseqSequence {
 	private int id;
 
 	@Column(name = "allele")
-	private int allele;
+	private String allele;
 
 	@Column(name = "read_count")
 	private int readCount;
@@ -42,7 +42,7 @@ public class ForenseqSequence {
 	@JoinColumn(name = "forenseq_id")
 	private Forenseq forenseq;
 
-	public ForenseqSequence(int allele, int readCount, @Size(max = 1000) String sequence) {
+	public ForenseqSequence(String allele, int readCount, @Size(max = 1000) String sequence) {
 		super();
 		this.allele = allele;
 		this.readCount = readCount;
