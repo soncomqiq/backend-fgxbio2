@@ -10,13 +10,11 @@ import java.util.Map.Entry;
 
 import javax.transaction.Transactional;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,8 +34,8 @@ public class FileService {
 
 	@Transactional
 	public String readExcelData(MultipartFile file) throws IOException {
-		Workbook workbook = openCompatibleWorkbook(file.getOriginalFilename(), file.getInputStream());
-
+		System.out.println(file.getOriginalFilename());
+		Workbook workbook = WorkbookFactory.create(file.getInputStream());
 		int numberOfSheets = workbook.getNumberOfSheets();
 
 		Person personInfo = new Person();
@@ -53,16 +51,12 @@ public class FileService {
 
 			if (sheetName.equals("Autosomal STRs")) {
 				extractInfo(personInfo, sample, sheet);
-				System.out.println("AAAAAAAAAAAAAAA");
 				extractForenseqData(personInfo, sample, sheet, locusAllele, 13, 40, "Autosome");
 			} else if (sheetName.equals("Y STRs")) {
-				System.out.println("YYYYYYYYYYYYYY");
 				extractForenseqData(personInfo, sample, sheet, locusAllele, 13, 36, "Y");
 			} else if (sheetName.equals("X STRs")) {
-				System.out.println("XXXXXXXXXXXXXXXX");
 				extractForenseqData(personInfo, sample, sheet, locusAllele, 13, 19, "X");
 			} else if (sheetName.equals("iSNPs")) {
-				System.out.println("IIIIIIIIIIIIIIIIII");
 				extractForenseqData(personInfo, sample, sheet, locusAllele, 12, 105, "iSNP");
 			}
 
@@ -73,11 +67,6 @@ public class FileService {
 	}
 
 	public Workbook openCompatibleWorkbook(String fileName, InputStream fis) throws IOException {
-//		if (fileName.toLowerCase().endsWith("xlsx")) {
-//			return new XSSFWorkbook(fis);
-//		} else if (fileName.toLowerCase().endsWith("xls")) {
-//			return new HSSFWorkbook(fis);
-//		}
 		return WorkbookFactory.create(fis);
 	}
 
