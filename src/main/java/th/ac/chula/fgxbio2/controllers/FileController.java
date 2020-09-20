@@ -1,7 +1,9 @@
 package th.ac.chula.fgxbio2.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,22 +26,26 @@ public class FileController {
 	private FileService fileservice;
 
 	@PostMapping("/uploadFile")
-	public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
-		String message;
-		try {
-			message = fileservice.readExcelData(file);
-			return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(message));
-		} catch (IOException e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-					new MessageResponse("Error: " + e.getMessage() + "\nFile name: " + file.getOriginalFilename()));
-		}
+	public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+		String message = fileservice.readExcelData(file);
+		return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(message));
 
 	}
 
 	@PostMapping("/uploadMultipleFiles")
 	public ResponseEntity<?> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-		Arrays.asList(files).stream().map(file -> uploadFile(file)).collect(Collectors.toList());
+		List<String> errorFiles = new ArrayList<>();
+		Arrays.asList(files).stream().map(file -> {
+			try {
+				return uploadFile(file);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				errorFiles.add(file.getOriginalFilename());
+				e.printStackTrace();
+				return null;
+			}
+		}).collect(Collectors.toList());
+		System.out.println(errorFiles);
 		return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse("Upload sucessfully."));
 	}
 }
