@@ -43,8 +43,7 @@ public class Forenseq {
 	@Column(name = "chromosome_type")
 	private String chromosomeType;
 
-	@ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
-						 CascadeType.DETACH, CascadeType.REFRESH})
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "sample_id")
 	private Sample sample;
 
@@ -58,12 +57,12 @@ public class Forenseq {
 		this.qcIndicator = qcIndicator;
 		this.chromosomeType = chromosomeType;
 	}
-	
+
 	public void add(ForenseqSequence fs) {
-		if(forenseqSequences == null) {
+		if (forenseqSequences == null) {
 			forenseqSequences = new ArrayList<>();
 		}
-		
+
 		forenseqSequences.add(fs);
 		fs.setForenseq(this);
 	}

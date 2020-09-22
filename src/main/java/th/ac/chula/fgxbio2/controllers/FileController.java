@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import th.ac.chula.fgxbio2.payload.response.MessageResponse;
+import th.ac.chula.fgxbio2.payload.response.UploadReponse;
 import th.ac.chula.fgxbio2.services.FileService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -29,12 +30,12 @@ public class FileController {
 	public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
 		String message = fileservice.readExcelData(file);
 		return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(message));
-
 	}
 
-	@PostMapping("/uploadMultipleFiles")
+	@PostMapping("/excel")
 	public ResponseEntity<?> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
 		List<String> errorFiles = new ArrayList<>();
+		
 		Arrays.asList(files).stream().map(file -> {
 			try {
 				return uploadFile(file);
@@ -45,7 +46,10 @@ public class FileController {
 				return null;
 			}
 		}).collect(Collectors.toList());
-		System.out.println(errorFiles);
-		return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse("Upload sucessfully."));
+
+		if (errorFiles.size() == 0) {
+			return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse("Upload sucessfully."));
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UploadReponse(errorFiles));
 	}
 }

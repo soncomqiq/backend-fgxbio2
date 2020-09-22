@@ -34,7 +34,6 @@ public class FileService {
 
 	@Transactional
 	public String readExcelData(MultipartFile file) throws IOException {
-		System.out.println(file.getOriginalFilename());
 		Workbook workbook = WorkbookFactory.create(file.getInputStream());
 		int numberOfSheets = workbook.getNumberOfSheets();
 

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import th.ac.chula.fgxbio2.models.tables.Forenseq;
 
 @Repository
-public interface ForenseqRepository extends JpaRepository<Forenseq, Integer>{
+public interface ForenseqRepository extends JpaRepository<Forenseq, Integer> {
 
 }

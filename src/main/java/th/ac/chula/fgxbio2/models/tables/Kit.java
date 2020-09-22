@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -37,8 +38,7 @@ public class Kit {
 	@Column(name = "chromosome_type")
 	private String chromosome_type;
 
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
-	@JoinTable(name = "kit_locus", joinColumns = @JoinColumn(name = "kit_id"), inverseJoinColumns = @JoinColumn(name = "locus_id"))
+	@OneToMany(mappedBy = "kit", cascade = CascadeType.ALL)
 	private List<Locus> loci;
 
 	public Kit(String kit, String chromosome_type) {

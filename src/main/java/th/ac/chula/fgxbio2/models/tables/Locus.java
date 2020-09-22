@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -30,9 +31,9 @@ public class Locus {
 	@Column(name = "locus")
 	private String locus;
 
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
-	@JoinTable(name = "kit_locus", joinColumns = @JoinColumn(name = "locus_id"), inverseJoinColumns = @JoinColumn(name = "kit_id"))
-	private List<Kit> kits;
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+	@JoinColumn(name = "kit_id")
+	private Kit kit;
 
 	@OneToMany(mappedBy = "locus", cascade = CascadeType.ALL)
 	private List<SummaryData> summaryData;
@@ -40,13 +41,13 @@ public class Locus {
 	public Locus() {
 	}
 
-	public Locus(String locus, List<Kit> kits) {
+	public Locus(String locus, Kit kit) {
 		this.locus = locus;
-		this.kits = kits;
+		this.kit = kit;
 	}
 
 	@Override
 	public String toString() {
-		return "Locus [id=" + id + ", locus=" + locus + ", kits=" + kits + "]";
+		return "Locus [id=" + id + ", locus=" + locus + ", kit=" + kit + "]";
 	}
 }

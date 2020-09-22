@@ -1,5 +1,7 @@
 package th.ac.chula.fgxbio2.payload.response;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +11,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageResponse {
-	private String message;
+public class UploadReponse {
+	private List<String> errorFiles;
 }
