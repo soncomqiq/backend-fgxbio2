@@ -7,27 +7,34 @@ import javax.persistence.PersistenceContext;
 
 import th.ac.chula.fgxbio2.payload.request.LocusAllele;
 
-public class SampleRepositoryImpl implements SampleRepositoryCustom{
+public class SampleRepositoryImpl implements SampleRepositoryCustom {
 	@PersistenceContext
 	EntityManager entityManager;
 
 	@Override
 	public List<?> searchMatchedSample(List<LocusAllele> lAList) {
-		String query = "SELECT b.Sample_Year, b.Sample_ID FROM (SELECT a.Sample_Year, a.Sample_ID, COUNT(*) AS amount FROM (SELECT * FROM (select * from forenseq UNION select * from forenseqY UNION select * from forenseqX) tmp WHERE ";
-		int length = lAList.size();
-		for (int i = 0; i < length; i++) {
-			LocusAllele rlc = lAList.get(i);
-			if (i == 0) {
-				query += " tmp._type = \"Yes\" and ( tmp.locus = \"" + rlc.getLocus() + "\" and" + " tmp.allele = "
-						+ rlc.getAllele() + " )";
-			} else {
-				query += " or ( tmp.locus = \"" + rlc.getLocus() + "\" and" + " tmp.allele = " + rlc.getAllele() + " )";
+		int matchedCount = 0;
+		String query = "SELECT fs.sample_id, fs.sample_year FROM forenseq ff inner join "
+				+ "forenseq_sequence ffs on ff.id = ffs.forenseq_id inner join samples fs "
+				+ "on ff.sample_id = fs.id where ";
+		
+		for (LocusAllele lA : lAList) {
+			if (matchedCount != 0) {
+				query += " OR ";
 			}
+			
+			if (lA.getAllele().split(",").length == 1) {
+				query += "(ff.locus = \"" + lA.getLocus() + "\" AND ffs.allele = " + lA.getAllele() + ")";
+				matchedCount += 1;
+			} else {
+				query += "(ff.locus = \"" + lA.getLocus() + "\" AND ff.genotype = \"" + lA.getAllele() + "\")";
+				matchedCount += 2;
+			}
+			
 		}
-		query += ") a GROUP BY a.Sample_Year, a.Sample_ID) b WHERE b.amount = " + length + ";";
-		
-		System.out.println(query);
-		
+
+		query += " GROUP BY fs.sample_id, fs.sample_year HAVING count(*) = " + Integer.toString(matchedCount) + ";";
+
 		return entityManager.createNativeQuery(query).getResultList();
 	}
 
