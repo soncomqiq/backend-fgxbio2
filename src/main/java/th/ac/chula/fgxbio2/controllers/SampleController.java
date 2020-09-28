@@ -3,6 +3,8 @@ package th.ac.chula.fgxbio2.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +22,7 @@ public class SampleController {
 	private SampleService sampleService;
 
 	@PostMapping("/persons")
-	public List<?> getPersonsByLocusAllele(@RequestBody List<LocusAllele> lAlist) {
-		return sampleService.getPersonsByLocusAllele(lAlist);
+	public ResponseEntity<?> getPersonsByLocusAllele(@RequestBody List<LocusAllele> lAlist) {
+		return ResponseEntity.status(HttpStatus.OK).body(sampleService.getPersonsByLocusAllele(lAlist));
 	}
 }
