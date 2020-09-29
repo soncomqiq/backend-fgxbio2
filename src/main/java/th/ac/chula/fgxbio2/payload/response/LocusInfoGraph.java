@@ -14,6 +14,9 @@ import th.ac.chula.fgxbio2.datastucture.AlleleAmount;
 @NoArgsConstructor
 public class LocusInfoGraph {
 	private List<AlleleAmount> aaList;
-	private float hetero;
-	private int total;
+	private int numberOfHetero;
+	private int numberOfHomo;
+	private int numberOfTotal;
+	private double heterozygocity;
+	private double homozygocity;
 }

@@ -22,4 +22,5 @@ public class ForenseqSequenceController {
 	public ResponseEntity<?> getGraphInfoByChroAndLocus(@RequestParam String chromosome, @RequestParam String locus) {
 		return ResponseEntity.status(HttpStatus.OK).body(forenseqSequenceService.getGraphInfoByChroAndLocus(chromosome, locus));
 	}
+	
 }

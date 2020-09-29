@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import th.ac.chula.fgxbio2.models.tables.Sample;
 
 @Repository
-public interface SampleRepository extends JpaRepository<Sample, Integer>, SampleRepositoryCustom{
+public interface SampleRepository extends JpaRepository<Sample, Integer>, SampleRepositoryCustom {
 
 }
