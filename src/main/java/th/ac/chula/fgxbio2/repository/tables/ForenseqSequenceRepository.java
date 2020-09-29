@@ -15,9 +15,9 @@ public interface ForenseqSequenceRepository extends JpaRepository<ForenseqSequen
 	public List<Object[]> findStatsByChromosomeAndLocus(@Param("chromosome") String chromosome,
 			@Param("locus") String locus);
 
-	@Query(value = "SELECT COUNT(*) FROM (SELECT DISTINCT COUNT(*) OVER () AS TotalRecords FROM forenseq_sequence ffs inner join forenseq ff on ffs.forenseq_id = ff.id where ff.chromosome_type = :chromosome and ff.locus = :locus GROUP BY ff.genotype, ff.sample_id HAVING count(*) = 2) sum", nativeQuery = true)
+	@Query(value = "SELECT COUNT(*) FROM (SELECT COUNT(*) FROM forenseq_sequence ffs inner join forenseq ff on ffs.forenseq_id = ff.id where ff.chromosome_type = :chromosome and ff.locus = :locus GROUP BY ff.genotype, ff.sample_id HAVING count(*) = 2) sum", nativeQuery = true)
 	public int findNumberOfHetero(@Param("chromosome") String chromosome, @Param("locus") String locus);
 
-	@Query(value = "SELECT COUNT(*) FROM (SELECT DISTINCT COUNT(*) OVER () AS TotalRecords FROM forenseq_sequence ffs inner join forenseq ff on ffs.forenseq_id = ff.id where ff.chromosome_type = :chromosome and ff.locus = :locus GROUP BY ff.genotype, ff.sample_id HAVING count(*) = 1) sum", nativeQuery = true)
+	@Query(value = "SELECT COUNT(*) FROM (SELECT COUNT(*) FROM forenseq_sequence ffs inner join forenseq ff on ffs.forenseq_id = ff.id where ff.chromosome_type = :chromosome and ff.locus = :locus GROUP BY ff.genotype, ff.sample_id HAVING count(*) = 1) sum", nativeQuery = true)
 	public int findNumberOfHomo(@Param("chromosome") String chromosome, @Param("locus") String locus);
 }
