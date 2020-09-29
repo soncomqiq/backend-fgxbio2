@@ -11,8 +11,9 @@ public class SampleRepositoryImpl implements SampleRepositoryCustom {
 	@PersistenceContext
 	EntityManager entityManager;
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<?> searchMatchedSample(List<LocusAllele> lAList) {
+	public List<Object[]> searchMatchedSample(List<LocusAllele> lAList) {
 		int matchedCount = 0;
 		String query = "SELECT fs.sample_id, fs.sample_year FROM forenseq ff inner join "
 				+ "forenseq_sequence ffs on ff.id = ffs.forenseq_id inner join samples fs "

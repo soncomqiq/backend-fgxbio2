@@ -1,6 +1,5 @@
 package th.ac.chula.fgxbio2.controllers;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +30,9 @@ public class SampleController {
 		Collection<? extends GrantedAuthority> rolesList = auth.getAuthorities();
 		if (rolesList.stream().anyMatch(e -> e.getAuthority().equals("ROLE_ADMIN"))
 				|| rolesList.stream().anyMatch(e -> e.getAuthority().equals("ROLE_LAB_USER"))) {
-			return ResponseEntity.status(HttpStatus.OK).body(sampleService.getPersonsByLocusAllele(lAlist));
+			return ResponseEntity.status(HttpStatus.OK).body(sampleService.getPersonsByLocusAllele(lAlist, true));
 		} else {
-			return ResponseEntity.status(HttpStatus.OK).body(new ArrayList<>());
+			return ResponseEntity.status(HttpStatus.OK).body(sampleService.getPersonsByLocusAllele(lAlist, false));
 		}
 	}
 }
