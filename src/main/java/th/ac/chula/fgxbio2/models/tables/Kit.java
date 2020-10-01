@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +37,7 @@ public class Kit {
 	private String kit;
 
 	@Column(name = "chromosome_type")
-	private String chromosome_type;
+	private String chromosomeType;
 
 	@OneToMany(mappedBy = "kit", cascade = CascadeType.ALL)
 	private List<Locus> loci;
@@ -44,12 +45,12 @@ public class Kit {
 	public Kit(String kit, String chromosome_type) {
 		super();
 		this.kit = kit;
-		this.chromosome_type = chromosome_type;
+		this.chromosomeType = chromosome_type;
 	}
 
 	@Override
 	public String toString() {
-		return "Kit [id=" + id + ", kit=" + kit + ", chromosome_type=" + chromosome_type + ", loci=" + loci + "]";
+		return "Kit [id=" + id + ", kit=" + kit + ", chromosome_type=" + chromosomeType + ", loci=" + loci + "]";
 	}
 
 }

@@ -26,7 +26,7 @@ public class FileController {
 	@Autowired
 	private FileService fileservice;
 
-	@PostMapping("/uploadFile")
+	@PostMapping("/upload")
 	public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
 		String message = fileservice.readExcelData(file);
 		return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(message));

@@ -28,4 +28,9 @@ public class ForenseqSequenceService {
 
 		return lIGraph;
 	}
+
+	public Object getMapInfoByLocus(String locus) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -13,10 +13,8 @@ import lombok.NoArgsConstructor;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class KitLocusResponse {
-	private List<String> aKits;
-
-	private List<String> xKits;
-
-	private List<String> yKits;
+public class ChromosomeLociResponse {
+	private List<String> aLoci;
+	private List<String> xLoci;
+	private List<String> yLoci;
 }

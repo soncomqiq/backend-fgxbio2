@@ -30,8 +30,17 @@ public class Province {
 	@Column(name = "id")
 	private int id;
 
-	@Column(name = "provice")
+	@Column(name = "province")
 	private String province;
+	
+	@Column(name = "native_name")
+	private String nativeName;
+	
+	@Column(name = "latitude")
+	private double latitude;
+	
+	@Column(name = "longitude")
+	private double longitude;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "region_id")

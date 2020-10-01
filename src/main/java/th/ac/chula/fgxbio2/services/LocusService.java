@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import th.ac.chula.fgxbio2.payload.response.KitLocusResponse;
+import th.ac.chula.fgxbio2.payload.response.ChromosomeLociResponse;
 import th.ac.chula.fgxbio2.repository.tables.LocusRepository;
 
 @Service
@@ -14,7 +14,7 @@ public class LocusService {
 	@Autowired
 	private LocusRepository locusRepository;
 
-	public KitLocusResponse getAllLocus(){
+	public ChromosomeLociResponse getAllLocus(){
 		List<Object[]> allList = locusRepository.findDistinctAllLocus();
 		List<String> aList = new ArrayList<>();
 		List<String> xList = new ArrayList<>();
@@ -38,6 +38,6 @@ public class LocusService {
 			}
 		}
 		
-		return new KitLocusResponse(aList, xList, yList);
+		return new ChromosomeLociResponse(aList, xList, yList);
 	}
 }

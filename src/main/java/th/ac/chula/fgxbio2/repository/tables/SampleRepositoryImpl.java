@@ -35,7 +35,7 @@ public class SampleRepositoryImpl implements SampleRepositoryCustom {
 		}
 
 		query += String.format(" GROUP BY fs.sample_id, fs.sample_year HAVING count(*) = %d;", matchedCount);
-
+		
 		return entityManager.createNativeQuery(query).getResultList();
 	}
 

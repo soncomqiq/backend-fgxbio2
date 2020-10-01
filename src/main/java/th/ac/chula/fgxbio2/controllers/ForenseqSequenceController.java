@@ -23,4 +23,8 @@ public class ForenseqSequenceController {
 		return ResponseEntity.status(HttpStatus.OK).body(forenseqSequenceService.getGraphInfoByChroAndLocus(chromosome, locus));
 	}
 	
+	@GetMapping("/map")
+	public ResponseEntity<?> getMapInfoByLocus(@RequestParam String locus) {
+		return ResponseEntity.status(HttpStatus.OK).body(forenseqSequenceService.getMapInfoByLocus(locus));
+	}
 }
