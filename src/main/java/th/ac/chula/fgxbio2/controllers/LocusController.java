@@ -17,7 +17,7 @@ import th.ac.chula.fgxbio2.services.LocusService;
 public class LocusController {
 	@Autowired
 	private LocusService locusService;
-	
+
 	@GetMapping("/all")
 	public ResponseEntity<ChromosomeLociResponse> getAllLocus(){
 		return ResponseEntity.status(HttpStatus.OK).body(locusService.getAllLocus());

@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 			.antMatchers("/api/loci/all", "/api/forenseq-sequences/graph", "/api/auth/**", "/api/samples/person", "/api/kits/**").permitAll()
 			.antMatchers("/api/test/user").hasAnyRole("USER","LAB_USER","ADMIN")
-			.antMatchers("/api/test/mod", "/api/files/upload", "/api/person/**").hasAnyRole("LAB_USER","ADMIN")
+			.antMatchers("/api/test/mod", "/api/files/upload", "/api/person/**", "/api/samples/allele", "/api/forenseq-sequences/pattern-alignment").hasAnyRole("LAB_USER","ADMIN")
 			.antMatchers("/api/test/admin").hasRole("ADMIN")
 			.anyRequest().authenticated();
 

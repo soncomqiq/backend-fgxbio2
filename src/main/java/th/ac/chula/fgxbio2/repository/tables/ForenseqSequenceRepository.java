@@ -20,4 +20,10 @@ public interface ForenseqSequenceRepository extends JpaRepository<ForenseqSequen
 
 	@Query(value = "SELECT COUNT(*) FROM (SELECT COUNT(*) FROM forenseq_sequence ffs inner join forenseq ff on ffs.forenseq_id = ff.id where ff.chromosome_type = :chromosome and ff.locus = :locus GROUP BY ff.genotype, ff.sample_id HAVING count(*) = 1) sum", nativeQuery = true)
 	public int findNumberOfHomo(@Param("chromosome") String chromosome, @Param("locus") String locus);
+
+	@Query(value = "SELECT pattern FROM pattern_alignment pa WHERE pa.locus = :locus ORDER BY pa.seq_no", nativeQuery = true)
+	public List<String> findMotifLocus(@Param("locus") String locus);
+
+	@Query(value = "SELECT sp.sample_id, sp.sample_year, ffs.sequence, ffs.read_count FROM forenseq fs INNER JOIN forenseq_sequence ffs ON fs.id = ffs.forenseq_id INNER JOIN samples sp ON fs.sample_id = sp.id WHERE fs.locus = :locus AND ffs.allele = :allele", nativeQuery = true)
+	public List<Object[]> findAllForenseqTable(@Param("locus") String locus, @Param("allele") float allele);
 }

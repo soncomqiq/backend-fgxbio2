@@ -13,7 +13,7 @@ import th.ac.chula.fgxbio2.services.ForenseqSequenceService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/forenseq-sequences/")
+@RequestMapping("/api/forenseq-sequences")
 public class ForenseqSequenceController {
 	@Autowired
 	private ForenseqSequenceService forenseqSequenceService;
@@ -26,5 +26,10 @@ public class ForenseqSequenceController {
 	@GetMapping("/map")
 	public ResponseEntity<?> getMapInfoByLocus(@RequestParam String locus) {
 		return ResponseEntity.status(HttpStatus.OK).body(forenseqSequenceService.getMapInfoByLocus(locus));
+	}
+	
+	@GetMapping("/pattern-alignment")
+	public ResponseEntity<?> getPatternAlignmentByLocusAndAllele(@RequestParam String locus, @RequestParam String allele){
+		return ResponseEntity.status(HttpStatus.OK).body(forenseqSequenceService.getPatternAlignmentByLocusAndAllele(locus, allele));
 	}
 }

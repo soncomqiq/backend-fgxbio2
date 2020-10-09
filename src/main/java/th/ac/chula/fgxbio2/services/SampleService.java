@@ -31,4 +31,9 @@ public class SampleService {
 		}
 	}
 
+	public List<Float> getAlleleByLocus(String locus) {
+		List<Float> alleleList = sampleRepository.findAlleleByLocus(locus);
+		return alleleList;
+	}
+
 }
