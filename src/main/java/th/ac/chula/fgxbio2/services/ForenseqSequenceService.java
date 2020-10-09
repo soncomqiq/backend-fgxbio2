@@ -45,10 +45,7 @@ public class ForenseqSequenceService {
 		List<Object[]> tmp = forenseqSequenceRepository.findAllForenseqTable(locus, Float.parseFloat(allele));
 
 		for (int i = 0; i < tmp.size(); i++) {
-			int currentPatternIdx = 0;
 			int currentSequenceIdx = 0;
-			int count = 0;
-			int countTotal = 0;
 			String seqAlignment = "";
 			String sequence = tmp.get(i)[2].toString();
 			int sequenceLength = sequence.length();
@@ -57,22 +54,26 @@ public class ForenseqSequenceService {
 				String currentMotif = motif.get(j);
 				int currentMotifSize = currentMotif.length();
 
-				if (sequence.indexOf(currentMotif) == -1) {
+				if (sequence.indexOf(currentMotif, currentSequenceIdx) == -1) {
 					continue;
 				}
 
-				int fTargetIndex = sequence.indexOf(currentMotif);
-				int lTargetIndex = sequence.lastIndexOf(currentMotif);
-				int numberOfMotif = (lTargetIndex - fTargetIndex) / currentMotifSize + 1;
-
+				int fTargetIndex = sequence.indexOf(currentMotif, currentSequenceIdx);
 				String beforePattern = sequence.substring(currentSequenceIdx, fTargetIndex);
 				seqAlignment += beforePattern;
-				seqAlignment += String.format(" (%s)%d ", currentMotif, numberOfMotif);
+				currentSequenceIdx += beforePattern.length();
 
-				currentSequenceIdx += beforePattern.length() + (lTargetIndex - fTargetIndex + currentMotifSize);
+				int numberOfCurrentMotif = 0;
+				while (currentSequenceIdx + currentMotifSize <= sequenceLength && sequence
+						.substring(currentSequenceIdx, currentSequenceIdx + currentMotifSize).equals(currentMotif)) {
+					numberOfCurrentMotif++;
+					currentSequenceIdx += currentMotifSize;
+				}
+
+				seqAlignment += String.format(" (%s)%d ", currentMotif, numberOfCurrentMotif);
 			}
-			
-			if(currentSequenceIdx < sequenceLength) {
+
+			if (currentSequenceIdx < sequenceLength) {
 				seqAlignment += sequence.substring(currentSequenceIdx, sequenceLength);
 			}
 
