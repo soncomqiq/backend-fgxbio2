@@ -45,51 +45,39 @@ public class ForenseqSequenceService {
 		List<Object[]> tmp = forenseqSequenceRepository.findAllForenseqTable(locus, Float.parseFloat(allele));
 
 		for (int i = 0; i < tmp.size(); i++) {
-			int patternIdx = 0;
-			int sequenceIdx = 0;
+			int currentPatternIdx = 0;
+			int currentSequenceIdx = 0;
 			int count = 0;
-			int count_total = 0;
+			int countTotal = 0;
 			String seqAlignment = "";
 			String sequence = tmp.get(i)[2].toString();
+			int sequenceLength = sequence.length();
 
-			while ((patternIdx < motif.size()) && (sequenceIdx <= sequence.length())) {
+			for (int j = 0; j < motif.size(); j++) {
+				String currentMotif = motif.get(j);
+				int currentMotifSize = currentMotif.length();
 
-				if (count_total == (int) Float.parseFloat(allele) || sequenceIdx == sequence.length()) {
-					seqAlignment += "(" + motif.get(patternIdx).substring(1) + ")" + count + " ";
-					patternIdx += 1;
-					count_total += count;
-					count = 0;
-					seqAlignment += sequence.substring(sequenceIdx);
-				} else {
-					String motifMode = motif.get(patternIdx).substring(0, 1);
-
-					switch (motifMode) {
-					case REPEATED_DATA:
-						if (sequence.substring(sequenceIdx, sequenceIdx + motif.get(patternIdx).substring(1).length())
-								.equals(motif.get(patternIdx).substring(1))) {
-							count += 1;
-							count_total += 1;
-							sequenceIdx += motif.get(patternIdx).substring(1).length();
-						} else {
-							seqAlignment += "(" + motif.get(patternIdx).substring(1) + ")" + count + " ";
-							count = 0;
-							patternIdx += 1;
-						}
-						break;
-					case ONE_TIME_DATA:
-						seqAlignment += sequence.substring(sequenceIdx,
-								sequenceIdx + motif.get(patternIdx).substring(1).length()) + " ";
-
-						sequenceIdx += motif.get(patternIdx).substring(1).length();
-						patternIdx += 1;
-						break;
-					default:
-						seqAlignment += "No Repeated Data";
-					}
+				if (sequence.indexOf(currentMotif) == -1) {
+					continue;
 				}
+
+				int fTargetIndex = sequence.indexOf(currentMotif);
+				int lTargetIndex = sequence.lastIndexOf(currentMotif);
+				int numberOfMotif = (lTargetIndex - fTargetIndex) / currentMotifSize + 1;
+
+				String beforePattern = sequence.substring(currentSequenceIdx, fTargetIndex);
+				seqAlignment += beforePattern;
+				seqAlignment += String.format(" (%s)%d ", currentMotif, numberOfMotif);
+
+				currentSequenceIdx += beforePattern.length() + (lTargetIndex - fTargetIndex + currentMotifSize);
+			}
+			
+			if(currentSequenceIdx < sequenceLength) {
+				seqAlignment += sequence.substring(currentSequenceIdx, sequenceLength);
 			}
 
-			pAList.add(new PatternAlignment(tmp.get(i)[0].toString(), Integer.parseInt(tmp.get(i)[1].toString()), sequence, Integer.parseInt(tmp.get(i)[3].toString()), seqAlignment));
+			pAList.add(new PatternAlignment(tmp.get(i)[0].toString(), Integer.parseInt(tmp.get(i)[1].toString()),
+					sequence, Integer.parseInt(tmp.get(i)[3].toString()), seqAlignment));
 		}
 
 		return pAList;
