@@ -33,7 +33,7 @@ public class FileService {
 	private PersonRepository personRepository;
 
 	@Transactional
-	public String readExcelData(MultipartFile file) throws IOException {
+	public String readExcelForenseqData(MultipartFile file) throws IOException {
 		Workbook workbook = WorkbookFactory.create(file.getInputStream());
 		int numberOfSheets = workbook.getNumberOfSheets();
 
@@ -84,7 +84,7 @@ public class FileService {
 
 				if (data.get(2).equals("Yes")) {
 					ForenseqSequence tempFS = new ForenseqSequence(data.get(1), (int) Double.parseDouble(data.get(3)),
-							data.size() < 5 ? "n/a" : data.get(4));
+							data.size() < 5 ? "n/a" : data.get(4), sample);
 					locusAllele.get(data.get(0)).getFsList().add(tempFS);
 				}
 			}
@@ -148,5 +148,13 @@ public class FileService {
 			}
 		}
 		return data;
+	}
+
+	public String readExcelPersonData(MultipartFile file) {
+		return "success";
+	}
+
+	public String readTextFileCEData(MultipartFile file) {
+		return "success";
 	}
 }

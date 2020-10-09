@@ -26,10 +26,22 @@ public class FileController {
 	@Autowired
 	private FileService fileservice;
 
-	@PostMapping("/upload")
-	public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-		String message = fileservice.readExcelData(file);
+	@PostMapping("/forenseq")
+	public ResponseEntity<?> uploadForensesqFile(@RequestParam("file") MultipartFile file) throws IOException {
+		String message = fileservice.readExcelForenseqData(file);
 		return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(message));
+	}
+	
+	@PostMapping("/person")
+	public ResponseEntity<?> uploadPersonFile(@RequestParam("file") MultipartFile file){
+		String message = fileservice.readExcelPersonData(file);
+		return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(""));
+	}
+	
+	@PostMapping("/cedata")
+	public ResponseEntity<?> uploadCEFile(@RequestParam("file") MultipartFile file){
+		String message = fileservice.readTextFileCEData(file);
+		return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(""));
 	}
 
 	@PostMapping("/excel")
@@ -38,7 +50,7 @@ public class FileController {
 		
 		Arrays.asList(files).stream().map(file -> {
 			try {
-				return uploadFile(file);
+				return uploadForensesqFile(file);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				errorFiles.add(file.getOriginalFilename());

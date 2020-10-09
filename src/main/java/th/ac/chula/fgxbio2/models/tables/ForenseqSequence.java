@@ -41,12 +41,17 @@ public class ForenseqSequence {
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "forenseq_id")
 	private Forenseq forenseq;
+	
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+	@JoinColumn(name = "sample_id")
+	private Sample sample;
 
-	public ForenseqSequence(String allele, int readCount, @Size(max = 1000) String sequence) {
+	public ForenseqSequence(String allele, int readCount, @Size(max = 1000) String sequence, Sample sample) {
 		super();
 		this.allele = allele;
 		this.readCount = readCount;
 		this.sequence = sequence;
+		this.sample = sample;
 	}
 
 	@Override

@@ -50,6 +50,9 @@ public class Sample {
 	@OneToMany(mappedBy = "sample", cascade = CascadeType.ALL)
 	private List<Forenseq> forenseqList;
 
+	@OneToMany(mappedBy = "sample", cascade = CascadeType.ALL)
+	private List<ForenseqSequence> forenseqSequenceList;
+
 	public Sample(int sampleYear, String sampleId, Person person) {
 		super();
 		this.sampleYear = sampleYear;
