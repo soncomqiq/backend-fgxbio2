@@ -10,12 +10,11 @@ import org.springframework.stereotype.Service;
 import th.ac.chula.fgxbio2.datastucture.AlleleAmount;
 import th.ac.chula.fgxbio2.payload.response.LocusInfoGraph;
 import th.ac.chula.fgxbio2.payload.response.PatternAlignment;
+import th.ac.chula.fgxbio2.payload.response.iSNPResponse;
 import th.ac.chula.fgxbio2.repository.tables.ForenseqSequenceRepository;
 
 @Service
 public class ForenseqSequenceService {
-	private static final String REPEATED_DATA = "1";
-	private static final String ONE_TIME_DATA = "2";
 
 	@Autowired
 	private ForenseqSequenceRepository forenseqSequenceRepository;
@@ -82,5 +81,13 @@ public class ForenseqSequenceService {
 		}
 
 		return pAList;
+	}
+
+	public List<iSNPResponse> getStatsISNP() {
+		List<iSNPResponse> result = forenseqSequenceRepository
+				.findStatByISNPGroupByLocusAndAllele().stream().map(e -> new iSNPResponse(e[0].toString(),
+						e[1].toString(), Integer.parseInt(e[2].toString())))
+				.collect(Collectors.toList());
+		return result;
 	}
 }

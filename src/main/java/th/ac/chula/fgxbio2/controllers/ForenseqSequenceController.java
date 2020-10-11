@@ -20,16 +20,24 @@ public class ForenseqSequenceController {
 
 	@GetMapping("/graph")
 	public ResponseEntity<?> getGraphInfoByChroAndLocus(@RequestParam String chromosome, @RequestParam String locus) {
-		return ResponseEntity.status(HttpStatus.OK).body(forenseqSequenceService.getGraphInfoByChroAndLocus(chromosome, locus));
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(forenseqSequenceService.getGraphInfoByChroAndLocus(chromosome, locus));
 	}
-	
+
 	@GetMapping("/map")
 	public ResponseEntity<?> getMapInfoByLocus(@RequestParam String locus) {
 		return ResponseEntity.status(HttpStatus.OK).body(forenseqSequenceService.getMapInfoByLocus(locus));
 	}
-	
+
 	@GetMapping("/pattern-alignment")
-	public ResponseEntity<?> getPatternAlignmentByLocusAndAllele(@RequestParam String locus, @RequestParam String allele){
-		return ResponseEntity.status(HttpStatus.OK).body(forenseqSequenceService.getPatternAlignmentByLocusAndAllele(locus, allele));
+	public ResponseEntity<?> getPatternAlignmentByLocusAndAllele(@RequestParam String locus,
+			@RequestParam String allele) {
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(forenseqSequenceService.getPatternAlignmentByLocusAndAllele(locus, allele));
+	}
+
+	@GetMapping("/isnp")
+	public ResponseEntity<?> getISNPStats() {
+		return ResponseEntity.status(HttpStatus.OK).body(forenseqSequenceService.getStatsISNP());
 	}
 }
