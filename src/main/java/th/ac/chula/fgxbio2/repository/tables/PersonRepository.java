@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import th.ac.chula.fgxbio2.models.tables.Person;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Integer>{
 

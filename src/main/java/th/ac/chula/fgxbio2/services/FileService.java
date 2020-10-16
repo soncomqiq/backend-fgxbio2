@@ -117,7 +117,7 @@ public class FileService {
 					String sampleId = data.get(1);
 					sample.setSampleId(sampleId);
 				} else if (data.get(0).equals("Gender")) {
-					EGender gender = data.get(1) == "XY" ? EGender.MALE : EGender.FEMALE;
+					EGender gender = data.get(1).equals("XY") ? EGender.MALE : EGender.FEMALE;
 					personInfo.setGender(gender);
 				}
 			} else {
