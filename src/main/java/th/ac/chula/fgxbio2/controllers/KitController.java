@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import th.ac.chula.fgxbio2.payload.response.KitLocusListResponse;
 import th.ac.chula.fgxbio2.services.KitService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/kits")
 public class KitController {

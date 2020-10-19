@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import th.ac.chula.fgxbio2.services.ForenseqSequenceService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/forenseq-sequences")
 public class ForenseqSequenceController {

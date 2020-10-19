@@ -19,7 +19,6 @@ import th.ac.chula.fgxbio2.payload.response.MessageResponse;
 import th.ac.chula.fgxbio2.payload.response.UploadReponse;
 import th.ac.chula.fgxbio2.services.FileService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/files")
 public class FileController {
@@ -31,23 +30,23 @@ public class FileController {
 		String message = fileservice.readExcelForenseqData(file);
 		return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(message));
 	}
-	
+
 	@PostMapping("/person")
-	public ResponseEntity<?> uploadPersonFile(@RequestParam("file") MultipartFile file){
+	public ResponseEntity<?> uploadPersonFile(@RequestParam("file") MultipartFile file) {
 		String message = fileservice.readExcelPersonData(file);
-		return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(""));
+		return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(message));
 	}
-	
+
 	@PostMapping("/cedata")
-	public ResponseEntity<?> uploadCEFile(@RequestParam("file") MultipartFile file){
+	public ResponseEntity<?> uploadCEFile(@RequestParam("file") MultipartFile file) {
 		String message = fileservice.readTextFileCEData(file);
-		return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(""));
+		return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(message));
 	}
 
 	@PostMapping("/excel")
 	public ResponseEntity<?> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
 		List<String> errorFiles = new ArrayList<>();
-		
+
 		Arrays.asList(files).stream().map(file -> {
 			try {
 				return uploadForensesqFile(file);

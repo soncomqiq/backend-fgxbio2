@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import th.ac.chula.fgxbio2.payload.response.ChromosomeLociResponse;
 import th.ac.chula.fgxbio2.services.LocusService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/loci")
 public class LocusController {

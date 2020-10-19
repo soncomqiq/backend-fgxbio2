@@ -20,7 +20,6 @@ import th.ac.chula.fgxbio2.payload.request.LocusAllele;
 import th.ac.chula.fgxbio2.payload.response.MatchedSampleResponse;
 import th.ac.chula.fgxbio2.services.SampleService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/samples")
 public class SampleController {
