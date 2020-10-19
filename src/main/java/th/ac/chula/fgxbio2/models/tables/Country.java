@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +24,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({ "regions", "persons" })
 public class Country {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +36,7 @@ public class Country {
 
 	@OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
 	private List<Region> regions;
-	
+
 	@OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
 	private List<Person> persons;
 

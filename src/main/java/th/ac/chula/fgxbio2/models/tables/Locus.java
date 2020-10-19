@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +22,7 @@ import lombok.Setter;
 @Table(name = "loci")
 @Getter
 @Setter
+@JsonIgnoreProperties({ "summaryData" })
 public class Locus {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

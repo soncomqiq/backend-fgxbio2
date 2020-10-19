@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +26,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({ "persons" })
 public class Province {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,13 +35,13 @@ public class Province {
 
 	@Column(name = "province")
 	private String province;
-	
+
 	@Column(name = "native_name")
 	private String nativeName;
-	
+
 	@Column(name = "latitude")
 	private double latitude;
-	
+
 	@Column(name = "longitude")
 	private double longitude;
 

@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +20,7 @@ import lombok.Setter;
 @Table(name = "continents")
 @Getter
 @Setter
+@JsonIgnoreProperties({ "summaryData" })
 public class Continent {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +29,10 @@ public class Continent {
 
 	@Column(name = "continent")
 	private String continent;
-	
+
 	@OneToMany(mappedBy = "continent", cascade = CascadeType.ALL)
 	private List<SummaryData> summaryData;
-	
+
 	public Continent() {
 	}
 
