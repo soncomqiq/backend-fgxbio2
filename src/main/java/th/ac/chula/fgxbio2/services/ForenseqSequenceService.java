@@ -1,7 +1,10 @@
 package th.ac.chula.fgxbio2.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 import th.ac.chula.fgxbio2.datastucture.AlleleAmount;
 import th.ac.chula.fgxbio2.payload.response.LocusInfoGraph;
 import th.ac.chula.fgxbio2.payload.response.PatternAlignment;
+import th.ac.chula.fgxbio2.payload.response.StatsMap;
 import th.ac.chula.fgxbio2.payload.response.iSNPResponse;
 import th.ac.chula.fgxbio2.repository.tables.ForenseqSequenceRepository;
 
@@ -18,6 +22,11 @@ public class ForenseqSequenceService {
 
 	@Autowired
 	private ForenseqSequenceRepository forenseqSequenceRepository;
+
+	private final List<String> COLOR_LIST = new ArrayList<>(Arrays.asList("rgba(255,87,34,0.8)", "rgba(255,255,0,0.8)",
+			"rgba(255,0,255,0.8)", "rgba(0,0,255,0.8)", "rgba(0,255,0,0.8)", "rgba(128,0,128,0.8)", "rgba(255,0,0,0.8)",
+			"rgba(0,255,255,0.8)", "rgba(128,128,0,0.8)", "rgba(0,0,128,0.8)", "rgba(88,214,141,0.8)",
+			"rgba(52,152,219,0.8)", "rgba(236,112,99,0.8)", "rgba(220,118,51,0.8)"));
 
 	public LocusInfoGraph getGraphInfoByChroAndLocus(String chromosome, String locus) {
 		List<AlleleAmount> stats = forenseqSequenceRepository.findStatsByChromosomeAndLocus(chromosome, locus).stream()
@@ -33,9 +42,23 @@ public class ForenseqSequenceService {
 		return lIGraph;
 	}
 
-	public Object getMapInfoByLocus(String locus) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<StatsMap> getMapInfoByLocus(String locus) {
+		List<Object[]> statMap = forenseqSequenceRepository.findStatsMapByLocus(locus);
+		Map<String, String> mapColor = new HashMap<String, String>();
+		List<StatsMap> result = new ArrayList<StatsMap>();
+
+		int count_color = 0;
+		for (int i = 0; i < statMap.size(); i++) {
+			if (mapColor.get(statMap.get(i)[3].toString()) == null) {
+				mapColor.put(statMap.get(i)[3].toString(), COLOR_LIST.get(count_color++));
+			}
+
+			result.add(new StatsMap(statMap.get(i)[0].toString(), Float.parseFloat(statMap.get(i)[1].toString()),
+					Float.parseFloat(statMap.get(i)[2].toString()), Float.parseFloat(statMap.get(i)[3].toString()),
+					Integer.parseInt(statMap.get(i)[4].toString()), mapColor.get(statMap.get(i)[3].toString())));
+		}
+
+		return result;
 	}
 
 	public List<PatternAlignment> getPatternAlignmentByLocusAndAllele(String locus, String allele) {
@@ -84,9 +107,8 @@ public class ForenseqSequenceService {
 	}
 
 	public List<iSNPResponse> getStatsISNP() {
-		List<iSNPResponse> result = forenseqSequenceRepository
-				.findStatByISNPGroupByLocusAndAllele().stream().map(e -> new iSNPResponse(e[0].toString(),
-						e[1].toString(), Integer.parseInt(e[2].toString())))
+		List<iSNPResponse> result = forenseqSequenceRepository.findStatByISNPGroupByLocusAndAllele().stream()
+				.map(e -> new iSNPResponse(e[0].toString(), e[1].toString(), Integer.parseInt(e[2].toString())))
 				.collect(Collectors.toList());
 		return result;
 	}

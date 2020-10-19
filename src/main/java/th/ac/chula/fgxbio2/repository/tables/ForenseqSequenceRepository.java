@@ -29,4 +29,7 @@ public interface ForenseqSequenceRepository extends JpaRepository<ForenseqSequen
 	
 	@Query(value = "SELECT fs.locus, ffs.allele, COUNT(*) as amount FROM forenseq fs INNER JOIN forenseq_sequence ffs ON fs.id = ffs.forenseq_id WHERE fs.chromosome_type = \"iSNP\" GROUP BY fs.locus, ffs.allele ORDER BY fs.locus", nativeQuery = true)
 	public List<Object[]> findStatByISNPGroupByLocusAndAllele();
+
+	@Query(value = "SELECT pv.province, pv.latitude, pv.longitude, ffs.allele, count(*) FROM forenseq fs INNER JOIN forenseq_sequence ffs ON fs.id = ffs.forenseq_id INNER JOIN samples sp ON sp.id = fs.sample_id INNER JOIN persons ps ON ps.id = sp.person_id INNER JOIN provinces pv ON pv.id = ps.province_id WHERE fs.locus = :locus GROUP BY pv.id ORDER BY cast(ffs.allele as unsigned);", nativeQuery = true)
+	public List<Object[]> findStatsMapByLocus(@Param("locus") String locus);
 }
