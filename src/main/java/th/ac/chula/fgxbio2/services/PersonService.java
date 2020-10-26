@@ -1,10 +1,12 @@
 package th.ac.chula.fgxbio2.services;
 
-import java.util.Optional;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import th.ac.chula.fgxbio2.models.tables.Province;
 import th.ac.chula.fgxbio2.models.tables.Race;
 import th.ac.chula.fgxbio2.models.tables.Region;
 import th.ac.chula.fgxbio2.payload.request.PersonCustom;
+import th.ac.chula.fgxbio2.payload.response.PersonsPages;
 import th.ac.chula.fgxbio2.repository.tables.CountryRepository;
 import th.ac.chula.fgxbio2.repository.tables.PersonRepository;
 import th.ac.chula.fgxbio2.repository.tables.ProvinceRepository;
@@ -81,6 +84,18 @@ public class PersonService {
 		}
 
 		return null;
+	}
+
+	public Person getPersonById(Integer id) {
+		Person person = personRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Person not found :: " + id));
+		return person;
+	}
+
+	public PersonsPages getAllPersonByPageAndSize(Integer page, Integer size) {
+		List<Person> personList = personRepository.findAll(PageRequest.of(page, size)).toList();
+		PersonsPages personResponse = new PersonsPages(personList, personRepository.count());
+		return personResponse;
 	}
 
 }
