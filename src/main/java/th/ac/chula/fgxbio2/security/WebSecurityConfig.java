@@ -85,7 +85,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						"/api/kits/**")
 				.permitAll().antMatchers("/api/test/user").hasAnyRole("USER", "LAB_USER", "ADMIN")
 				.antMatchers("/api/test/mod", "/api/files/upload", "/api/person/**", "/api/samples/allele",
-						"/api/forenseq-sequences/pattern-alignment", "/api/forenseq-sequences/isnp", "/api/persons")
+						"/api/forenseq-sequences/pattern-alignment", "/api/forenseq-sequences/isnp", "/api/persons",
+						"/api/persons-custom/**")
 				.hasAnyRole("LAB_USER", "ADMIN").antMatchers("/api/test/admin").hasRole("ADMIN").anyRequest()
 				.authenticated();
 		

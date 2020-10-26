@@ -1,0 +1,22 @@
+package th.ac.chula.fgxbio2.payload.request;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import th.ac.chula.fgxbio2.models.tables.EGender;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class PersonCustom {
+	private String firstname;
+	private String lastname;
+	private EGender gender;
+	private int age;
+	private int race_id;
+	private int country_id;
+	private int province_id;
+	private int region_id;
+}
