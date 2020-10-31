@@ -1,7 +1,5 @@
 package th.ac.chula.fgxbio2.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +17,7 @@ import th.ac.chula.fgxbio2.payload.response.PersonsPages;
 import th.ac.chula.fgxbio2.services.PersonService;
 
 @RestController
-@RequestMapping("/api/persons-custom")
+@RequestMapping("/api/persons")
 public class PersonController {
 	@Autowired
 	private PersonService personService;
