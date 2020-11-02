@@ -16,6 +16,7 @@ import th.ac.chula.fgxbio2.models.tables.Province;
 import th.ac.chula.fgxbio2.models.tables.Race;
 import th.ac.chula.fgxbio2.models.tables.Region;
 import th.ac.chula.fgxbio2.payload.request.PersonCustom;
+import th.ac.chula.fgxbio2.payload.response.PersonForenseq;
 import th.ac.chula.fgxbio2.payload.response.PersonsPages;
 import th.ac.chula.fgxbio2.repository.tables.CountryRepository;
 import th.ac.chula.fgxbio2.repository.tables.PersonRepository;
@@ -55,7 +56,6 @@ public class PersonService {
 		if (raceRepository.existsById(raceId) && countryRepository.existsById(countryId)
 				&& regionRepository.existsById(regionId) && provinceRepository.existsById(provinceId)) {
 
-			
 			Person person = personRepository.findById(id)
 					.orElseThrow(() -> new ResourceNotFoundException("Person not found :: " + id));
 
@@ -79,7 +79,7 @@ public class PersonService {
 			person.setRace(race);
 
 			personRepository.save(person);
-			
+
 			return "OK";
 		}
 
@@ -96,6 +96,13 @@ public class PersonService {
 		List<Person> personList = personRepository.findAll(PageRequest.of(page, size)).toList();
 		PersonsPages personResponse = new PersonsPages(personList, personRepository.count());
 		return personResponse;
+	}
+
+	public PersonForenseq getPersonForenseqById(Integer id) {
+		Person person = personRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Person not found :: " + id));
+		PersonForenseq personFenForenseq = new PersonForenseq();
+		return personFenForenseq;
 	}
 
 }

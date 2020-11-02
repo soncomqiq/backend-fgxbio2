@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import th.ac.chula.fgxbio2.models.tables.Person;
 import th.ac.chula.fgxbio2.payload.request.PersonCustom;
+import th.ac.chula.fgxbio2.payload.response.PersonForenseq;
 import th.ac.chula.fgxbio2.payload.response.PersonsPages;
 import th.ac.chula.fgxbio2.services.PersonService;
 
@@ -32,6 +33,12 @@ public class PersonController {
 	public ResponseEntity<?> getPersonById(@PathVariable Integer id){
 		Person person = personService.getPersonById(id);
 		return ResponseEntity.status(HttpStatus.OK).body(person);
+	}
+	
+	@GetMapping("/{id}/forenseq")
+	public ResponseEntity<?> getPersonForenseqById(@PathVariable Integer id){
+		PersonForenseq personForenseq = personService.getPersonForenseqById(id);
+		return ResponseEntity.status(HttpStatus.OK).body(personForenseq);
 	}
 	
 	@PutMapping("/{id}")
