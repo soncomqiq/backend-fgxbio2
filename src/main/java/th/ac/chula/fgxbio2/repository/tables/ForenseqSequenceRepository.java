@@ -33,6 +33,6 @@ public interface ForenseqSequenceRepository extends JpaRepository<ForenseqSequen
 	@Query(value = "SELECT pv.province, pv.latitude, pv.longitude, ffs.allele, count(*) FROM forenseq fs INNER JOIN forenseq_sequence ffs ON fs.id = ffs.forenseq_id INNER JOIN samples sp ON sp.id = fs.sample_id INNER JOIN persons ps ON ps.id = sp.person_id INNER JOIN provinces pv ON pv.id = ps.province_id WHERE fs.locus = :locus GROUP BY pv.id ORDER BY cast(ffs.allele as unsigned);", nativeQuery = true)
 	public List<Object[]> findStatsMapByLocus(@Param("locus") String locus);
 	
-	@Query(value = "SELECT fs.locus, ffs.allele, ffs.sequence, ffs.read_count FROM forenseq fs INNER JOIN samples sm ON fs.sample_id = sm.id INNER JOIN persons ps ON sm.person_id = ps.id INNER JOIN forenseq_sequence ffs ON ffs.forenseq_id = fs.id where ps.id = :personId", nativeQuery = true)
+	@Query(value = "SELECT fs.chromosome_type, fs.locus, ffs.allele, ffs.sequence, ffs.read_count FROM forenseq fs INNER JOIN samples sm ON fs.sample_id = sm.id INNER JOIN persons ps ON sm.person_id = ps.id INNER JOIN forenseq_sequence ffs ON ffs.forenseq_id = fs.id where ps.id = :personId", nativeQuery = true)
 	public List<Object[]> findAllForenseqSequenceByPersonId(@Param("personId") int personId);
 }

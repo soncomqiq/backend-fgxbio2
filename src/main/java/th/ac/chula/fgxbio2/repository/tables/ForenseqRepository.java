@@ -11,6 +11,6 @@ import th.ac.chula.fgxbio2.models.tables.Forenseq;
 
 @Repository
 public interface ForenseqRepository extends JpaRepository<Forenseq, Integer> {
-	@Query(value = "SELECT fs.genotype, fs.locus, fs.qc_indicator FROM forenseq fs INNER JOIN samples sm ON fs.sample_id = sm.id INNER JOIN persons ps ON sm.person_id = ps.id where ps.id = :personId", nativeQuery = true)
+	@Query(value = "SELECT fs.chromosome_type, fs.genotype, fs.locus, fs.qc_indicator FROM forenseq fs INNER JOIN samples sm ON fs.sample_id = sm.id INNER JOIN persons ps ON sm.person_id = ps.id where ps.id = :personId", nativeQuery = true)
 	public List<Object[]> findAllForenseqByPersonId(@Param("personId") int personId);
 }

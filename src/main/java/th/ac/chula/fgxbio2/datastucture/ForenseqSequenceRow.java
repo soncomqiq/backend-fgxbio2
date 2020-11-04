@@ -15,7 +15,7 @@ import lombok.Setter;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ForenseqSequenceRow {
 	private String locus;
-	private Float allele;
+	private String allele;
 	private String sequence;
 	private int readCount;
 }
